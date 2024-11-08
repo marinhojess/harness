@@ -22,8 +22,8 @@ jobs:
         run: |
           curl -LO https://github.com/harness/harness-cli/releases/download/v0.0.25-Preview/harness-v0.0.25-Preview-linux-arm64.tar.gz
           tar -xvf harness-v0.0.25-Preview-linux-arm64.tar.gz
-          echo 'export PATH="$(pwd):$PATH"' >> ~/.bash_profile
-          source ~/.bash_profile
+          ls
+          cd harness-v0.0.25-Preview-linux-arm64
           harness --version
 
       - name: Configurar o CLI do Harness com a API Key
