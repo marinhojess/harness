@@ -29,12 +29,12 @@ jobs:
           # Configurar o CLI do Harness com a API Key
           ./harness login --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} --api-key ${{ secrets.HARNESS_API_KEY }}
 
-      - name: Enviar artefato para o Harness
+      - name: Enviar artefato para o Harness via API
         run: |
-          ARTIFACT_NAME=artefato-01.txt
-          # Envia o arquivo para o Harness, com o nome do artefato gerado
-          ./harness artifact upload \
-            --file $ARTIFACT_NAME \
-            --artifact-name $ARTIFACT_NAME \
-            --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} \
-            --artifact-path $ARTIFACT_NAME
+          curl -X POST https://app.harness.io/gateway/api/v1/artifact/upload \
+            -H "Authorization: Bearer ${{ secrets.HARNESS_API_KEY }}" \
+            -F "file=@artefato-01.txt" \
+            -F "artifact-name=artefato-01.txt" \
+            -F "account-id ${{ secrets.HARNESS_ACCOUNT_ID }}" \
+            -F "project-id ${{ secrets.HARNESS_PROJECT_ID }}" \
+            -F "artifact-path=artefato-01.txt"
