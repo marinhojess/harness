@@ -20,15 +20,16 @@ jobs:
 
       - name: Instalar Harness CLI
         run: |
-          curl -Lo harness-cli.tar.gz https://github.com/harness/harness-cli/releases/download/v1.0.0/harness-cli-linux-amd64.tar.gz
-          tar -xvf harness-cli.tar.gz
-          sudo mv harness-cli /usr/local/bin/harness-cli
-          harness-cli --version
+          curl -LO https://github.com/harness/harness-cli/releases/download/v0.0.25-Preview/harness-v0.0.25-Preview-linux-arm64.tar.gz
+          tar -xvf harness-v0.0.25-Preview-linux-arm64.tar.gz
+          echo 'export PATH="$(pwd):$PATH"' >> ~/.bash_profile
+          source ~/.bash_profile
+          harness --version
 
       - name: Configurar o CLI do Harness com a API Key
         run: |
           # Configurar o CLI do Harness com a API Key
-          harness-cli config init \
+          harness config init \
             --api-key ${{ secrets.HARNESS_API_KEY }} \
             --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} \
             --app-id ${{ secrets.HARNESS_APP_ID }} \
@@ -38,7 +39,7 @@ jobs:
         run: |
           ARTIFACT_NAME=artefato-01.txt
           # Envia o arquivo para o Harness, com o nome do artefato gerado
-          harness-cli artifact upload \
+          harness artifact upload \
             --file $ARTIFACT_NAME \
             --artifact-name $ARTIFACT_NAME \
             --app-id ${{ secrets.HARNESS_APP_ID }} \
