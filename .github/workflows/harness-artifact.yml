@@ -36,5 +36,5 @@ jobs:
             -F "file=@artefato-01.txt" \
             -F "artifact-name=artefato-01.txt" \
             -F "account-id ${{ secrets.HARNESS_ACCOUNT_ID }}" \
-            -F "project-id ${{ secrets.HARNESS_PROJECT_ID }}" \
+            -F "project-id ${{ secrets.HARNESS_APP_ID }}" \
             -F "artifact-path=artefato-01.txt"
