@@ -22,14 +22,12 @@ jobs:
         run: |
           curl -LO https://github.com/harness/harness-cli/releases/download/v0.0.25-Preview/harness-v0.0.25-Preview-linux-arm64.tar.gz
           tar -xvf harness-v0.0.25-Preview-linux-arm64.tar.gz
-          ls
-          cd harness-v0.0.25-Preview-linux-arm64
-          harness --version
+          ./harness --version
 
       - name: Configurar o CLI do Harness com a API Key
         run: |
           # Configurar o CLI do Harness com a API Key
-          harness config init \
+          ./harness config init \
             --api-key ${{ secrets.HARNESS_API_KEY }} \
             --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} \
             --app-id ${{ secrets.HARNESS_APP_ID }} \
@@ -39,7 +37,7 @@ jobs:
         run: |
           ARTIFACT_NAME=artefato-01.txt
           # Envia o arquivo para o Harness, com o nome do artefato gerado
-          harness artifact upload \
+          ./harness artifact upload \
             --file $ARTIFACT_NAME \
             --artifact-name $ARTIFACT_NAME \
             --app-id ${{ secrets.HARNESS_APP_ID }} \
