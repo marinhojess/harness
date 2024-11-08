@@ -14,12 +14,33 @@ jobs:
       - name: Verificar repositório
         uses: actions/checkout@v3
 
-      - name: Criar arquivo de texto
+      - name: Criar arquivo de artefato
         run: |
-          echo "Este é um arquivo de exemplo gerado pela GitHub Action." > artefato-harness-01.txt
+          echo "Este é um arquivo de exemplo gerado pela GitHub Action." > artefato-01.txt
 
-      - name: Enviar artefato
-        uses: actions/upload-artifact@v3
-        with:
-          name: artefato-texto
-          path: artefato-harness-01.txt
+      - name: Instalar Harness CLI
+        run: |
+          curl -Lo harness-cli.tar.gz https://github.com/harness/harness-cli/releases/download/v1.0.0/harness-cli-linux-amd64.tar.gz
+          tar -xvf harness-cli.tar.gz
+          sudo mv harness-cli /usr/local/bin/harness-cli
+          harness-cli --version
+
+      - name: Configurar o CLI do Harness com a API Key
+        run: |
+          # Configurar o CLI do Harness com a API Key
+          harness-cli config init \
+            --api-key ${{ secrets.HARNESS_API_KEY }} \
+            --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} \
+            --app-id ${{ secrets.HARNESS_APP_ID }} \
+            --region us-west-1
+
+      - name: Enviar artefato para o Harness
+        run: |
+          ARTIFACT_NAME=artefato-01.txt
+          # Envia o arquivo para o Harness, com o nome do artefato gerado
+          harness-cli artifact upload \
+            --file $ARTIFACT_NAME \
+            --artifact-name $ARTIFACT_NAME \
+            --app-id ${{ secrets.HARNESS_APP_ID }} \
+            --artifact-path $ARTIFACT_NAME \
+            --account-id ${{ secrets.HARNESS_ACCOUNT_ID }}
