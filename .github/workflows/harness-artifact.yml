@@ -24,17 +24,13 @@ jobs:
           tar -xvf harness-v0.0.25-Preview-linux-amd64.tar.gz
           ./harness --version
 
-      - name: Configurar o CLI do Harness com a API Key
-        run: |
-          # Configurar o CLI do Harness com a API Key
-          ./harness login --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} --api-key ${{ secrets.HARNESS_API_KEY }}
-
-      - name: Enviar artefato para o Harness via API
-        run: |
-          curl -X POST https://app.harness.io/gateway/api/v1/artifact/upload \
-            -H "Authorization: Bearer ${{ secrets.HARNESS_API_KEY }}" \
-            -F "file=@artefato-01.txt" \
-            -F "artifact-name=artefato-01.txt" \
-            -F "account-id ${{ secrets.HARNESS_ACCOUNT_ID }}" \
-            -F "project-id ${{ secrets.HARNESS_APP_ID }}" \
-            -F "artifact-path=artefato-01.txt"
+      - name: Deploy
+        id: deploy
+        uses: fac/harness-deploy-action@v1
+        with:
+         webhookUrl: https://app.harness.io/ng/account/O2ffgxCBQcyRy49we0t0uw/module/ci/orgs/default/projects/default_project/settings/webhooks/github
+         application: ${{ secrets.HARNESS_APP_ID }}
+         services: web,console,job
+         version: ${{ github.sha }}
+         waitForDeploy: false # optional
+         harnessApiKey: ${{ secrets.HARNESS_API_KEY }} 
