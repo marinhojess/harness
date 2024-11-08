@@ -27,11 +27,7 @@ jobs:
       - name: Configurar o CLI do Harness com a API Key
         run: |
           # Configurar o CLI do Harness com a API Key
-          ./harness config init \
-            --api-key ${{ secrets.HARNESS_API_KEY }} \
-            --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} \
-            --app-id ${{ secrets.HARNESS_APP_ID }} \
-            --region us-west-1
+          ./harness login --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} --api-key ${{ secrets.HARNESS_API_KEY }}
 
       - name: Enviar artefato para o Harness
         run: |
@@ -40,6 +36,5 @@ jobs:
           ./harness artifact upload \
             --file $ARTIFACT_NAME \
             --artifact-name $ARTIFACT_NAME \
-            --app-id ${{ secrets.HARNESS_APP_ID }} \
-            --artifact-path $ARTIFACT_NAME \
-            --account-id ${{ secrets.HARNESS_ACCOUNT_ID }}
+            --account-id ${{ secrets.HARNESS_ACCOUNT_ID }} \
+            --artifact-path $ARTIFACT_NAME
