@@ -1,0 +1,25 @@
+name: GitHub Action para enviar artefato para o Harness
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar repositório
+        uses: actions/checkout@v3
+
+      - name: Criar arquivo de texto
+        run: |
+          echo "Este é um arquivo de exemplo gerado pela GitHub Action." > artefato-harness-01.txt
+
+      - name: Enviar artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: artefato-texto
+          path: artefato-harness-01.txt
